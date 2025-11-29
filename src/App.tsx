@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const colors  = [
+      "#FB2C37", // red
+      "#FF6900", // orange
+      "#F0B200", // yellow
+      "#00C951", // green
+      "#00A6F5", // blue
+      "#8E51FF", // purple
+      "#F7339A", // pink
+      "#060606"  // black
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    ]
+
+    console.log(colors);
+    const cells = Array.from({ length: 9 }, (_, i) => ({
+        id: i + 1,
+        color: colors[Math.floor(Math.random() * colors.length)]
+        // dit is neit goed volgends de linter en hier moet nog naar gekeken worden
+    }));
+    console.log(cells);
+    return (
+    <div className="full-grid" role="grid">
+      {cells.map((n) => (
+        <div key={n.id} className="cell" role="gridcell">
+          {n.id}
+        </div>
+      ))}
+    </div>
+  );
 }
 
-export default App
+export default App;
