@@ -4,3 +4,5 @@
 - aangeven waar de on click events moeten komen
 - algemeen bugfixes (denk aan brackets die niet goed stonden)
 - style={{ backgroundColor: colors[cell.id - 1].hex }} (Ik had hulp nodig met de juiste data uit colors krijgen)                  />
+- colorChanger[activeColorIndex].hex (ik had colorChanger.hex[activeColorIndex] en wist niet waarom dit niet werkte)
+- Het blokje word wit wanneer de rotatie klaar is in game 1 (heeft ai mij me geholpen dit heb ik niet 1 op 1 overgenomen)

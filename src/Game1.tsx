@@ -1,6 +1,10 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
+
 
 export default function Game1() {
+    const [level, setLevel] = useState(1);
+    const [tier , setTier] = useState(0);
+
     const colors = [
         { name: "red", hex: "#FB2C37" },
         { name: "orange", hex: "#FF6900" },
@@ -20,16 +24,53 @@ export default function Game1() {
         }));
     };
 
+
+
+    const colorChanger = (() =>
+        Array.from({ length: 3 }, () => colors[Math.floor(Math.random() * colors.length)])
+    )();
+
+    console.log(colorChanger[0])
+
+
+
+
+
+
+
     const [cells] = useState(shuffleCells);
     const [mainColor, ] = useState(() => colors[Math.floor(Math.random() * colors.length)]);
+
+    const [activeColorIndex, setActiveColorIndex] = useState(0);
+
+    const [isFinished, setIsFinished] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActiveColorIndex((prevIndex) => {
+                if (prevIndex >= colorChanger.length - 1) {
+                    clearInterval(interval);
+                    setIsFinished(true);
+                    return prevIndex;
+                }
+                return prevIndex + 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
 
 
     return (
         <div className="game-container">
             <h1>Game 1</h1>
-
-            <div className="main-square" style={{ backgroundColor: mainColor.hex }}>
-
+            <div
+                className="main-square"
+                style={{
+                    backgroundColor: isFinished ? "#FFFFFF" : colorChanger[activeColorIndex].hex
+                }}
+            >
             </div>
             <div className="squares-container">
                 {cells.map((cell) => (
@@ -37,7 +78,7 @@ export default function Game1() {
                         key={cell.id}
                         className="square"
                         style={{ backgroundColor: colors[cell.id - 1].hex }}
-                        onClick={() => {if(colors[cell.id - 1].name === mainColor.name){
+                        onClick={() => {if(colors[cell.id - 1].hex === colorChanger[tier].hex){
                         alert("Correct!");}
                         }
                         }
