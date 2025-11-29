@@ -36,6 +36,35 @@ header {
     left: 0;
 }
 
+.game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.squares-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.square {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #333;
+    border-radius: 8px;
+}
+
+.main-square {
+    width: 200px;
+    height: 200px;
+    border: 3px solid #333;
+    border-radius: 12px;
+}
+
 .logo-container {
     position: fixed;
     top: 20px;
