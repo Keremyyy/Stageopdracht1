@@ -1,36 +1,44 @@
+import { useMemo } from "react";
 import "./App.css";
 
-
-
 function App() {
-  const colors  = [
-      "#FB2C37", // red
-      "#FF6900", // orange
-      "#F0B200", // yellow
-      "#00C951", // green
-      "#00A6F5", // blue
-      "#8E51FF", // purple
-      "#F7339A", // pink
-      "#060606"  // black
+    const colors = [
+        { name: "red", hex: "#FB2C37" },
+        { name: "orange", hex: "#FF6900" },
+        { name: "yellow", hex: "#F0B200" },
+        { name: "green", hex: "#00C951" },
+        { name: "blue", hex: "#00A6F5" },
+        { name: "purple", hex: "#8E51FF" },
+        { name: "pink", hex: "#F7339A" },
+        { name: "black", hex: "#060606" },
+        { name: "gray", hex: "#A9A9A9" },
+        // er horen 8 kleuren in te zitten dus er moet even naar de grey gekeken worden
+    ];
 
-    ]
+    const cells = useMemo(() => {
+        const shuffled = [...colors].sort(() => Math.random() - 0.5);
+        // math.random mag niet van de linter hier moet nog even naar gekeken worden
+        return Array.from({ length: 9 }, (_, i) => ({
+            id: i + 1,
+            color: shuffled[i]
 
-    console.log(colors);
-    const cells = Array.from({ length: 9 }, (_, i) => ({
-        id: i + 1,
-        color: colors[Math.floor(Math.random() * colors.length)]
-        // dit is neit goed volgends de linter en hier moet nog naar gekeken worden
-    }));
-    console.log(cells);
+        }));
+    }, []);
+
     return (
-    <div className="full-grid" role="grid">
-      {cells.map((n) => (
-        <div key={n.id} className="cell" role="gridcell">
-          {n.id}
+        <div className="full-grid" role="grid">
+            {cells.map((n) => (
+                <div
+                    key={n.id}
+                    className="cell"
+                    role="gridcell"
+                    style={{ backgroundColor: n.color.hex }}
+                >
+                    {n.id}
+                </div>
+            ))}
         </div>
-      ))}
-    </div>
-  );
+    );
 }
 
 export default App;
