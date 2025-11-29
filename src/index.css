@@ -36,6 +36,17 @@ header {
     left: 0;
 }
 
+.logo-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    width: 80px;
+}
+.logo-container img {
+    width: 100%;
+    height: auto;
+}
 h1 {
     color: red;
     background: white;
