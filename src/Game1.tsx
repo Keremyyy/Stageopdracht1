@@ -1,9 +1,13 @@
-import {useEffect, useState} from "react";
-
+import { useEffect, useState } from "react";
 
 export default function Game1() {
+    const maxLevel = 3
+    const [wrongAwnser, setWrongAwnser] = useState(0)
+    const [explaination, setExplanation] = useState(true)
     const [level, setLevel] = useState(1);
-    const [tier , setTier] = useState(0);
+    const [tier, setTier] = useState(0);
+    const [nextLevel, setNextLevel] = useState(false);
+    const [gameOver, setGameOver] = useState(false);
 
     const colors = [
         { name: "red", hex: "#FB2C37" },
@@ -24,43 +28,54 @@ export default function Game1() {
         }));
     };
 
-
-
-    const colorChanger = (() =>
-        Array.from({ length: 3 }, () => colors[Math.floor(Math.random() * colors.length)])
-    )();
-
-    console.log(colorChanger[0])
-
-
-
-
-
-
-
     const [cells] = useState(shuffleCells);
-    const [mainColor, ] = useState(() => colors[Math.floor(Math.random() * colors.length)]);
-
+    const [colorChanger, setColorChanger] = useState(() =>
+        Array.from({ length: 3 }, () => colors[Math.floor(Math.random() * colors.length)])
+    );
     const [activeColorIndex, setActiveColorIndex] = useState(0);
-
     const [isFinished, setIsFinished] = useState(false);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveColorIndex((prevIndex) => {
-                if (prevIndex >= colorChanger.length - 1) {
-                    clearInterval(interval);
-                    setIsFinished(true);
-                    return prevIndex;
-                }
-                return prevIndex + 1;
-            });
-        }, 1000);
+        setActiveColorIndex(0);
+        setIsFinished(false);
 
-        return () => clearInterval(interval);
-    }, []);
+        if (!gameOver && !explaination) {
+            const interval = setInterval(() => {
+                setActiveColorIndex((prevIndex) => {
+                    if (prevIndex >= level - 1) {
+                        clearInterval(interval);
+                        setIsFinished(true);
+                        return prevIndex;
+                    }
+
+                    return prevIndex + 1;
+                });
+            }, 500);
 
 
+            return () => clearInterval(interval);
+        }
+    }, [level, gameOver, explaination]);
+
+
+    if(explaination){
+
+        return (
+            <div className="explanation-container">
+                <h2>Welcome bij Color Folower!</h2>
+                <p>Het doel van dit spel is om de gekleurde blokjes aan te klikken</p>
+                <p>In de volgorde die op het grote vierkant word aangegeven</p>
+                <button onClick={() => setExplanation(false)}>spel spelen</button>
+            </div>
+        );}
+
+    if (gameOver) {
+        return (
+            <div className="result-container">
+                <h2>Game Over!</h2>
+                <p>Wrong Clicks: {wrongAwnser}</p>
+                <button onClick={() => window.location.reload()}>Play Again</button>
+            </div>);}
 
     return (
         <div className="game-container">
@@ -72,16 +87,42 @@ export default function Game1() {
                 }}
             >
             </div>
+            {level >= maxLevel && tier >= maxLevel ? (
+                <button onClick={() =>
+
+                    setGameOver(true)}>finish</button>
+            ) : nextLevel ? (
+                <button
+                    onClick={() => {
+                        setLevel((l) => l + 1);
+                        setTier(0);
+                        setNextLevel(false);
+                        setIsFinished(false);
+                        setActiveColorIndex(0);
+                        setColorChanger(
+                            Array.from({ length: maxLevel }, () => colors[Math.floor(Math.random() * colors.length)])
+                        );
+                    }}
+                >
+                    Next Level
+                </button>
+            ) : null}
             <div className="squares-container">
                 {cells.map((cell) => (
                     <div
                         key={cell.id}
                         className="square"
                         style={{ backgroundColor: colors[cell.id - 1].hex }}
-                        onClick={() => {if(colors[cell.id - 1].hex === colorChanger[tier].hex){
-                        alert("Correct!");}
-                        }
-                        }
+                        onClick={() => {
+                            if (colors[cell.id - 1].hex === colorChanger[tier].hex) {
+                                setTier(tier + 1);
+                                if (tier + 1 >= level) {
+                                    setNextLevel(true);
+                                }
+                            } else {
+                                setWrongAwnser(wrongAwnser + 1);
+                            }
+                        }}
                     />
                 ))}
             </div>

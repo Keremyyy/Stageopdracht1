@@ -67,7 +67,7 @@ export default function Game2() {
         return (
             <div className="explanation-container">
                 <h2>Welcome bij Color Clicker!</h2>
-                <p>Het doel van dit spel is om de kleur rechts boven in te leze en deze zo snel mogelijk aan te klikken</p>
+                <p>Het doel van dit spel is om de kleur rechts boven in te lezen en deze zo snel mogelijk aan te klikken</p>
                 <p>Voor elke juiste klik krijg je een punt, voor elke verkeerde klik telt het als een fout.</p>
                 <button onClick={() => setExplanation(false)}>spel spelen</button>
                 </div>
